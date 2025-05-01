@@ -53,10 +53,10 @@ void MapGenerator::CreateGoal(float x, float y, int index)
 
 void MapGenerator::CreateStereoMadnessMap()
 {
-	//CreateMapSection1();
+	CreateMapSection1();
 	CreateMapSection2();
 	CreateMapSection3();
-	//CreateMapSection4();
+	
 }
 
 void MapGenerator::CreateMapSection1()
@@ -74,9 +74,7 @@ void MapGenerator::CreateMapSection1()
 
 	// 1-1
 	CreateSpike(baseX + (10 * 122), height - 61.0f - 122.0f, index++);
-	CreateSpike(baseX + (11 * 122), height - 61.0f - 122.0f, index++);
-	CreateSpike(baseX + (12 * 122), height - 61.0f - 122.0f, index++);
-
+	
 	// 1-2
 	CreateMiniSpike(baseX + (19 * 122), height - 30.5f - 122.0f, index++);
 	CreateSpike(baseX + (20 * 122), height - 61.0f - 122.0f, index++);
@@ -101,8 +99,8 @@ void MapGenerator::CreateMapSection2()
 {
 	int height = m_pGame->GetHeight();
 	int index = m_pPlayScene->GetBlockStartIndex() + m_pPlayScene->GetBlockCount();
-	//float baseX = 0.0f + (45 * 122); // 섹션 1 이후 시작점
-	float baseX = 0.0f;
+	float baseX = 0.0f + (45 * 122); // 섹션 1 이후 시작점
+	//float baseX = 0.0f;
 
 
 	// 섹션 2: 플랫폼 점프 섹션
@@ -145,8 +143,8 @@ void MapGenerator::CreateMapSection3()
 {
 	int height = m_pGame->GetHeight();
 	int index = m_pPlayScene->GetBlockStartIndex() + m_pPlayScene->GetBlockCount();
-	//float baseX = 10.0f + (22 * 122) + (21 * 122); // 섹션 2 이후 시작점
-	float baseX = 0.0f + (63 * 122);
+	float baseX = 0.0f + (45 * 122) + (63 * 122); // 섹션 2 이후 시작점
+	//float baseX = 0.0f + (63 * 122);
 	//float baseX = 0.0f;
 
 	// 섹션 3: 점프 조합
@@ -159,12 +157,12 @@ void MapGenerator::CreateMapSection3()
 		CreatePlatform(baseX + 122 * 3 +(i * 122* 4), height - 61.0f - (122.0f * 3) - (122.0f * i), index++);
 	}
 
+	// 3-2
 	//낭떠러지
 	for (int i = 21; i < 24; i++) {
-		//CreateBlock(baseX + (i * 122), height - 61.0f - 122.0f, index++);
 		CreateBlock2(baseX + (i * 122), height - 61.0f - (122.0f * 5), index++);
 	}
-	for (int i = 24; i < 30; i++) {
+	for (int i = 24; i < 45; i++) {
 		CreateBlock(baseX + (i * 122), height - 61.0f - (122.0f * 0), index++);
 		CreateBlock(baseX + (i * 122), height - 61.0f - (122.0f * 1), index++);
 		CreateBlock(baseX + (i * 122), height - 61.0f - (122.0f * 2), index++);
@@ -172,66 +170,145 @@ void MapGenerator::CreateMapSection3()
 		CreateBlock(baseX + (i * 122), height - 61.0f - (122.0f * 4), index++);
 		CreateBlock2(baseX + (i * 122), height - 61.0f - (122.0f * 5), index++);
 	}
-	
-	//내려가는 계단
-	{
-		int i = 30;
+
+	// 3-3 (세모 4개와 바 2개) * 2개
+	for (int i = 27; i < 31; i++) {
+		CreateSpike(baseX + (i * 122), height - 61.0f - (122.0f * 6), index++);
+	}
+	for (int i = 28; i < 30; i++) {
+		CreatePlatform(baseX + (i * 122), height - 61.0f - (122.0f * 7), index++);
+	}
+	for (int i = 37; i < 41; i++) {
+		CreateSpike(baseX + (i * 122), height - 61.0f - (122.0f * 6), index++);
+	}
+	for (int i = 38; i < 40; i++) {
+		CreatePlatform(baseX + (i * 122), height - 61.0f - (122.0f * 7), index++);
+	}
+
+	// 3-4 한 층 내려갔다 올라갔다 두층 내려가는 낭떠러지 
+	for (int i = 45; i < 55; i++) {
 		CreateBlock(baseX + (i * 122), height - 61.0f - (122.0f * 0), index++);
 		CreateBlock(baseX + (i * 122), height - 61.0f - (122.0f * 1), index++);
 		CreateBlock(baseX + (i * 122), height - 61.0f - (122.0f * 2), index++);
 		CreateBlock(baseX + (i * 122), height - 61.0f - (122.0f * 3), index++);
 		CreateBlock2(baseX + (i * 122), height - 61.0f - (122.0f * 4), index++);
 	}
+
+	for (int i = 48; i < 52; i++) {
+		CreatePlatform(baseX + (i * 122), height - 61.0f - (122.0f * 6), index++);
+	}
+	for (int i = 48; i < 52; i++) {
+		CreateSpike(baseX + (i * 122), height - 29.5f - (122.0f * 7), index++);
+	}
+
+	for (int i = 55; i < 61; i++) {
+		CreateBlock(baseX + (i * 122), height - 61.0f - (122.0f * 0), index++);
+		CreateBlock(baseX + (i * 122), height - 61.0f - (122.0f * 1), index++);
+		CreateBlock(baseX + (i * 122), height - 61.0f - (122.0f * 2), index++);
+		CreateBlock(baseX + (i * 122), height - 61.0f - (122.0f * 3), index++);
+		CreateBlock(baseX + (i * 122), height - 61.0f - (122.0f * 4), index++);
+		CreateBlock2(baseX + (i * 122), height - 61.0f - (122.0f * 5), index++);
+	}
+
 	{
-		int i = 31;
+		int i = 60;
+		CreateSpike(baseX + (i * 122), height - 61.0f - (122.0f * 6), index++);
+	}
+
+	{
+		int i = 61;
+		CreateSpike(baseX + (i * 122), height - 61.0f - (122.0f * 4), index++);
+	}
+	for (int i = 61; i < 70; i++) {
 		CreateBlock(baseX + (i * 122), height - 61.0f - (122.0f * 0), index++);
 		CreateBlock(baseX + (i * 122), height - 61.0f - (122.0f * 1), index++);
 		CreateBlock(baseX + (i * 122), height - 61.0f - (122.0f * 2), index++);
 		CreateBlock2(baseX + (i * 122), height - 61.0f - (122.0f * 3), index++);
 	}
+
+	// 3-5 낭떠러지 끝 점프맵 시작
+	// 내려가기
+	for (int i = 70; i < 73; i++) {
+		CreateBlock2(baseX + (i * 122), height - 61.0f - (122.0f * 3), index++);
+	}
+
+	for (int i = 0; i < 16; i++) {//여기 수정
+		CreateSpikeBed(baseX + (70 * 122) + (i * 122 * 3), height - 20.0f, index++);
+	}
+
+	for (int i = 75; i < 79; i++) {
+		CreatePlatform(baseX + (i * 122), height - 61.0f - (122.0f * 3), index++);
+	}
+
 	{
-		int i = 32;
+		int i = 78;
+		CreateSpike(baseX + (i * 122), height - 29.5f - (122.0f * 4), index++);
+	}
+
+
+	for (int i = 80; i < 87; i++) {
+		CreatePlatform(baseX + (i * 122), height - 61.0f - (122.0f * 2), index++);
+	}
+	{
+		int i = 86;
+		CreateSpike(baseX + (i * 122), height - 29.5f - (122.0f * 3), index++);
+	}
+
+	for (int i = 88; i < 93; i++) {
+		CreatePlatform(baseX + (i * 122), height - 61.0f - (122.0f * 1), index++);
+	}
+
+	// 올라가기
+	for (int i = 0; i < 6; i++) { // 6번째 가시 있음
+		//시작 96
+		CreatePlatform(baseX + (96 * 122) + (i * 122 * 4), height - 61.0f - (122.0f * 2) - (122.0f * i), index++);
+	}
+
+	{
+		int i = 116;
+		CreateSpike(baseX + (i * 122), height - 29.5f - (122.0f * 8), index++);
+	}
+
+	// 1스테이지 종료
+	for (int i = 114; i < 118; i++) {
+		CreateBlock2(baseX + (i * 122), height - 61.0f - (122.0f * 3), index++);
+	}
+
+	for (int i = 118; i < 141; i++) {
 		CreateBlock(baseX + (i * 122), height - 61.0f - (122.0f * 0), index++);
 		CreateBlock(baseX + (i * 122), height - 61.0f - (122.0f * 1), index++);
-		CreateBlock2(baseX + (i * 122), height - 61.0f - (122.0f * 2), index++);
-	}
-
-	//
-	for (int i = 33; i < 53; i++) {
-		CreateBlock(baseX + (i * 122), height - 61.0f - (122.0f * 0), index++);
-		CreateBlock2(baseX + (i * 122), height - 61.0f - (122.0f * 1), index++);
+		CreateBlock(baseX + (i * 122), height - 61.0f - (122.0f * 2), index++);
+		CreateBlock2(baseX + (i * 122), height - 61.0f - (122.0f * 3), index++);
 	}
 
 
-	// 블록 카운트 업데이트
-	m_pPlayScene->UpdateBlockCount(index - m_pPlayScene->GetBlockStartIndex());
-}
-
-void MapGenerator::CreateMapSection4()
-{
-	int height = m_pGame->GetHeight();
-	int index = m_pPlayScene->GetBlockStartIndex() + m_pPlayScene->GetBlockCount();
-	float baseX = 10.0f + (22 * 122) + (21 * 122) + (23 * 122); // 섹션 3 이후 시작점
-
-	// 섹션 4: 마지막 도전 구간 및 목표
-
-	// 마지막 스파이크베드 구간
-	CreateBlock2(baseX, height - 61.0f, index++);
-	CreateSpikeBed(baseX + (1 * 122), height - 30.0f, index++);
-	CreateBlock2(baseX + (5 * 122), height - 61.0f, index++);
-
-	// 마지막 점프 도전
-	CreatePlatform(baseX + (6 * 122), height - 150.0f, index++);
-	CreateSpike(baseX + (8 * 122), height - 180.0f, index++);
-	CreateBlock2(baseX + (9 * 122), height - 61.0f, index++);
-
-	// 목표 지점으로 이어지는 길
-	for (int i = 0; i < 5; i++) {
-		CreateBlock2(baseX + ((10 + i) * 122), height - 61.0f, index++);
+	// 위에
+	for (int i = 118; i < 124; i++) {
+		CreateBlock(baseX + (i * 122), height - 61.0f - (122.0f * 9), index++);
+		CreateBlock(baseX + (i * 122), height - 61.0f - (122.0f * 8), index++);
+		CreateBlock2(baseX + (i * 122), height - 61.0f - (122.0f * 7), index++);
+	}
+	
+	for (int i = 124; i < 135; i++) {
+		CreateBlock(baseX + (i * 122), height - 61.0f - (122.0f * 9), index++);
+		CreateBlock(baseX + (i * 122), height - 61.0f - (122.0f * 8), index++);
+		CreateBlock(baseX + (i * 122), height - 61.0f - (122.0f * 7), index++);
+		CreateBlock2(baseX + (i * 122), height - 61.0f - (122.0f * 6), index++);
 	}
 
-	// 목표 오브젝트
-	CreateGoal(baseX + (15 * 122), height - 91.0f, index++);
+	for (int i = 135; i < 141; i++) {
+		CreateBlock(baseX + (i * 122), height - 61.0f - (122.0f * 9), index++);
+		CreateBlock(baseX + (i * 122), height - 61.0f - (122.0f * 8), index++);
+		CreateBlock2(baseX + (i * 122), height - 61.0f - (122.0f * 7), index++);
+	}
+
+
+	{
+		int i = 138;
+		CreateGoal(baseX + (i * 122), height - 91.5f - (122.0f * 4), index++);
+	}
+
+
 
 	// 블록 카운트 업데이트
 	m_pPlayScene->UpdateBlockCount(index - m_pPlayScene->GetBlockStartIndex());

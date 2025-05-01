@@ -435,9 +435,10 @@ void PlayScene::UpdatePlayerInfo()
 
 					// 충돌 방향 결정 (상단 충돌 vs 측면 충돌)
 					// 상단 충돌은 플레이어가 블록 위로 떨어질 때만 발생
-					bool topCollision = playerBottom >= blockTop &&
-						playerBottom <= blockTop + 20 && // 작은 여유 공간 추가
-						pPlayer->GetVerticalVelocity() > 0; // 아래로 떨어지고 있어야 함
+					bool topCollision = playerBottom + 20 >= blockTop 
+						&& playerBottom <= blockTop + 40 
+						//&& pPlayer->GetVerticalVelocity() > 0
+						; // 아래로 떨어지고 있어야 함
 
 
 					switch (pObject->Type())
@@ -446,21 +447,23 @@ void PlayScene::UpdatePlayerInfo()
 					case ObjectType::BLOCK2:
 					case ObjectType::PLATFORM:
 						//착지가 가능하다고요!
-
 						if (topCollision) {
 							// 상단 충돌 - 플레이어를 블록 위로 배치
 							pPlayer->SetPosition(pPlayer->GetPosition().x, blockTop - pPlayer->GetColliderBox()->halfSize.y);
 							isGrounded = true;
+							
 						}
 						else {
 							// 측면 충돌 - 사망 처리
 							m_bIsDead = true;
+							std::cout << "블록 옆" << std::endl;
 						}
 						break;
 
 					case ObjectType::SPIKEBED:
 						// 가시에 닿으면 사망 처리
 						m_bIsDead = true;
+						std::cout << "침대 죽음" << std::endl;
 						break;
 
 					case ObjectType::GOAL:
@@ -479,6 +482,7 @@ void PlayScene::UpdatePlayerInfo()
 					case ObjectType::SPIKE:
 					case ObjectType::MINISPKIE:
 						m_bIsDead = true;
+						std::cout << "가시 죽음" << std::endl;
 						break;
 					}
 				}
