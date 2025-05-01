@@ -37,6 +37,7 @@ void PlayScene::Update(float deltaTime)
 	}
 	else if (m_bIsEnd) {
 		std::cout << "총 재시도 횟수: " << m_retryCount << std::endl;
+		m_pGame->SetRetryCount(m_retryCount);
 		m_pGame->ChangeScene(SceneType::SCENE_ENDING);
 		return;
 	}
@@ -74,6 +75,7 @@ void PlayScene::Update(float deltaTime)
 	}
 
 	m_levelPosition += 1;
+	//std::cout << m_levelPosition << std::endl;
 }
 
 void PlayScene::Render(HDC hDC)
@@ -97,7 +99,7 @@ void PlayScene::Render(HDC hDC)
 #pragma region progressbar
 	// 간단한 진행 표시줄 그리기
 	int width = m_pGame->GetWidth();
-	int totalLength = 13000; // Stereo Madness 맵 길이
+	int totalLength = 3266; // Stereo Madness 맵 길이
 	int progressWidth = (int)((float)m_levelPosition / totalLength * 300);
 
 	// 진행 표시줄 배경

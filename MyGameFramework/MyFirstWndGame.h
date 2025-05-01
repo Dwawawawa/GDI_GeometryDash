@@ -2,6 +2,7 @@
 #include "NzWndBase.h"
 #include "Utillity.h"
 #include "Scene.h"
+#include "AudioSystem.h"
 
 class GameTimer;
 class Scene;
@@ -23,6 +24,11 @@ public:
 
     void ChangeScene(SceneType eSceneType);
 
+	void SetRetryCount(int count) { m_retryCount = count; }
+	int GetRetryCount() const { return m_retryCount; }
+
+    void OnSpaceKeyDown();
+
 private:
     void Update();
     void Render();
@@ -32,12 +38,13 @@ private:
 
     void OnMouseMove(int x, int y);
     void OnLButtonDown(int x, int y);
-    //void OnRButtonDown(int x, int y);
-    // 에너미에 대해서 필요 없어. 애초에 입력이 많이 필요 없지.
 
     void FixedUpdate();
     void LogicUpdate();
 
+	// 오디오 관련 메서드 추가
+	bool InitializeAudio();
+	void FinalizeAudio();
 
 private:
     HDC m_hFrontDC = nullptr;
@@ -52,6 +59,7 @@ private:
     int m_eCurrentScene = SCENE_TITLE;
     Scene* m_pScenes[SceneType::SCENE_MAX] = { nullptr, nullptr, nullptr };
     
+    int m_retryCount = 0;
 
     struct MOUSE_POS
     {

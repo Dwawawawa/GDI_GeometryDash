@@ -246,9 +246,9 @@ void GameObject::Jump()
 
 void Background::SetBitmapInfo(BitmapInfo* bitmapInfo)
 {
-    assert(m_pBitmapInfo == nullptr && "BitmapInfo must be null!");
+	assert(m_pBitmapInfo == nullptr && "BitmapInfo must be null!");
 
-    m_pBitmapInfo = bitmapInfo;
+	m_pBitmapInfo = bitmapInfo;
 }
 
 void GameObject::DrawBitmap(HDC hdc)
@@ -282,7 +282,7 @@ void GameObject::DrawBitmap(HDC hdc)
 		points[2].y = centerY + (-halfWidth * sinTheta - halfHeight * cosTheta);
 
 		// 회전된 이미지 그리기
-		PlgBlt(hdc, points, hBitmapDC, 0, 0, m_pBitmapInfo->GetWidth(), m_pBitmapInfo->GetHeight(), NULL, 0, 0);
+		PlgBlt(hdc, points, hBitmapDC, 0, 0, m_pBitmapInfo->GetWidth(), m_pBitmapInfo->GetHeight(), nullptr, 0, 0);
     }
     else{
 		// BLENDFUNCTION 설정 (알파 채널 처리)

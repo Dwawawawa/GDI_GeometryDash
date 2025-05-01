@@ -31,6 +31,12 @@ bool MyFirstWndGame::Initialize()
         return false;
     }
 
+	// 오디오 시스템 초기화 (오디오 실패해도 게임은 계속 진행)
+	if (!InitializeAudio())
+	{
+		std::cout << "Failed to initialize audio system" << std::endl;
+	}
+
 
     RECT rcClient = {};
     GetClientRect(m_hWnd, &rcClient);
@@ -74,6 +80,7 @@ bool MyFirstWndGame::Initialize()
     m_pScenes[SceneType::SCENE_ENDING] = new EndingScene();
     m_pScenes[SceneType::SCENE_ENDING]->Initialize(this);
 
+    return true;
 }
 
 void MyFirstWndGame::Run()
@@ -89,7 +96,8 @@ void MyFirstWndGame::Run()
 			}
 			else if (msg.message == WM_KEYDOWN && msg.wParam == VK_SPACE)
 			{
-				// 스페이스바 입력 처리 - 실제 Jump 동작은 PlayScene에서 처리
+				
+                MyFirstWndGame::OnSpaceKeyDown();
 			}
             else if (msg.message == WM_MOUSEMOVE)
             {
@@ -111,6 +119,8 @@ void MyFirstWndGame::Run()
 
 void MyFirstWndGame::Finalize()
 {
+    FinalizeAudio();
+
     delete m_pGameTimer;
     m_pGameTimer = nullptr;
 
@@ -145,6 +155,33 @@ void MyFirstWndGame::LogicUpdate()
 
 }
 
+
+bool MyFirstWndGame::InitializeAudio()
+{
+	AudioSystem* pAudioSystem = AudioSystem::GetInstance();
+	if (!pAudioSystem->Initialize())
+	{
+		return false;
+	}
+
+	// Stereo Madness 배경 음악 로드
+	if (!pAudioSystem->LoadBackgroundMusic("../Resource/geometryDash/Geometry Dash - Stereo Madness.mp3"))
+	{
+		std::cerr << "Failed to load background music" << std::endl;
+		return false;
+	}
+
+	// 배경 음악 재생 시작
+	pAudioSystem->PlayBackgroundMusic(true); // 루프 재생
+
+	return true;
+}
+
+void MyFirstWndGame::FinalizeAudio()
+{
+	AudioSystem::GetInstance()->Shutdown();
+	AudioSystem::DestroyInstance();
+}
 
 void MyFirstWndGame::Update()
 {
@@ -215,4 +252,29 @@ void MyFirstWndGame::OnLButtonDown(int x, int y)
     m_PlayerTargetPos.x = x;
     m_PlayerTargetPos.y = y;
 
+}
+
+void MyFirstWndGame::OnSpaceKeyDown()
+{
+	// 현재 씬에 따라 다른 처리
+	switch (m_eCurrentScene)
+	{
+	case SCENE_TITLE:
+		// 타이틀 씬에서는 스페이스바를 눌러 게임 시작
+		static_cast<TitleScene*>(m_pScenes[m_eCurrentScene])->OnSpaceKeyPressed();
+		break;
+
+	case SCENE_PLAY:
+		// 플레이 씬에서는 점프 동작
+		// 이미 PlayScene::UpdatePlayerInfo()에서 처리되므로 별도 코드 불필요
+		break;
+
+	case SCENE_ENDING:
+		// 엔딩 씬에서는 스페이스바를 눌러 타이틀로 돌아가기
+		static_cast<EndingScene*>(m_pScenes[m_eCurrentScene])->OnSpaceKeyPressed();
+		break;
+
+	default:
+		break;
+	}
 }

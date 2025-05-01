@@ -2,7 +2,7 @@
 #include "MyFirstWndGame.h"
 #include "GameObject.h"
 #include "Utillity.h"
-#include <assert.h>
+#include <cassert>
 #include <iostream>
 using namespace std;
 using namespace learning;
@@ -11,6 +11,9 @@ void TitleScene::Initialize(NzWndBase* pWnd)
 {
     m_pGame = dynamic_cast<MyFirstWndGame*>(pWnd);
     assert(m_pGame != nullptr && "Game object is not initialized!");
+
+	// 타이틀 이미지 로드
+	m_pTitleBitmapInfo = renderHelp::CreateBitmapInfo(L"../Resource/geometryDash/title.png");
 
     Background* pNewObject = new Background(ObjectType::BACKGROUND);
     pNewObject->SetPosition(0.0f, 0.0f);
@@ -21,30 +24,35 @@ void TitleScene::Initialize(NzWndBase* pWnd)
     pNewObject->SetWidth(width);
     pNewObject->SetHeight(height);
 
-    pNewObject->SetBitmapInfo(m_pGame->GetBackgroundBitmapInfo());
+   // 배경 이미지 설정 - 타이틀 이미지 또는 기본 배경
+    if (m_pTitleBitmapInfo != nullptr) {
+        pNewObject->SetBitmapInfo(m_pTitleBitmapInfo);
+    } else {
+        // 백업용으로 기본 배경 사용
+        pNewObject->SetBitmapInfo(m_pGame->GetBackgroundBitmapInfo());
+    }
 
-    m_rect.left = width/2 - 50;
-    m_rect.top = height/2 - 50;
-    m_rect.right = m_rect.left + 100;
-    m_rect.bottom = m_rect.top + 100;
+	m_rect.left = width / 2 - 300;
+	m_rect.top = height / 2 + 150;
+	m_rect.right = m_rect.left + 600;
+	m_rect.bottom = m_rect.top + 60;
 
     m_pBackground = pNewObject;
+
+    wcscpy_s(m_szTitle, L"스페이스바를 눌러 시작하세요");
+
+
+    
+    m_bWaitingForInput = true;
+
 }
 
 void TitleScene::Update(float deltaTime)
 {
-   static float time = 0.0f;
-    time += deltaTime;
-
-    if (time > 1000.0f)
-    {   
-        time = 0.0f;
-        m_pGame->ChangeScene(SceneType::SCENE_PLAY);
-    }
-    else
-    {
-        wsprintf(m_szTitle, L"Title Scene %d", static_cast<int>(time / 1000.0f) + 1);
-    }
+	// 스페이스바 입력이 MyFirstWndGame::Run()에서 감지되면 m_bWaitingForInput이 false로 변경됨
+	if (!m_bWaitingForInput) {
+		m_pGame->ChangeScene(SceneType::SCENE_PLAY);
+	}
 }
 
 void TitleScene::Render(HDC hDC)
@@ -53,7 +61,9 @@ void TitleScene::Render(HDC hDC)
     m_pBackground->Render(hDC);
     
 
-    DrawText(hDC, m_szTitle, -1, &m_rect, DT_SINGLELINE | DT_CENTER | DT_VCENTER);
+	SetTextColor(hDC, RGB(255, 255, 255));
+	SetBkMode(hDC, TRANSPARENT);
+	DrawText(hDC, m_szTitle, -1, &m_rect, DT_CENTER | DT_VCENTER | DT_SINGLELINE);
 }
 
 void TitleScene::Finalize()
@@ -63,14 +73,22 @@ void TitleScene::Finalize()
         delete m_pBackground;
         m_pBackground = nullptr;
     }
+
+    m_pTitleBitmapInfo = nullptr;
 }
 
 void TitleScene::Enter()
 {
-   
+    m_bWaitingForInput = true;
 }
 
 void TitleScene::Leave()
 {
+}
+
+void TitleScene::OnSpaceKeyPressed()
+{
+	// 스페이스바 입력 감지
+	m_bWaitingForInput = false;
 }
 
