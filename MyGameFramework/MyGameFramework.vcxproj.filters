@@ -51,6 +51,9 @@
     <ClCompile Include="TitleScene.cpp">
       <Filter>Scene</Filter>
     </ClCompile>
+    <ClCompile Include="MapGenerator.cpp">
+      <Filter>리소스 파일</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Utillity.h">
@@ -88,6 +91,9 @@
     </ClInclude>
     <ClInclude Include="EndingScene.h">
       <Filter>Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="MapGenerator.h">
+      <Filter>리소스 파일</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

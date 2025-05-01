@@ -85,7 +85,7 @@ private:
 
 public:
     using Vector2f = learning::Vector2f;
-    Vector2f PlayerTargetPosition() const { return Vector2f(static_cast<float>(m_PlayerTargetPos.x), static_cast<float>(m_PlayerTargetPos.y)); }
+    Vector2f PlayerTargetPosition() const { return {static_cast<float>(m_PlayerTargetPos.x), static_cast<float>(m_PlayerTargetPos.y)}; }
 
 
     BitmapInfo* GetPlayerBitmapInfo() const { return m_pPlayerBitmapInfo; }

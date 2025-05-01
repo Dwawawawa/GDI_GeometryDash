@@ -4,7 +4,7 @@
 #include "RenderHelp.h"
 #include "GameObject.h"
 #include "Utillity.h"
-#include <assert.h>
+#include <cassert>
 #include <iostream>
 
 // 과제: 해당 코드의 문제는 무엇일까요? 어떻게 개선하면 좋을까요?
@@ -76,6 +76,12 @@ GameObject::~GameObject()
     {
         delete m_pColliderBox;
         m_pColliderBox = nullptr;
+    }
+
+    if (m_pColliderTriangle)
+    {
+		delete m_pColliderTriangle;
+		m_pColliderTriangle= nullptr;
     }
 }
 
@@ -205,10 +211,16 @@ void GameObjectBase::Move(float deltaTime)
 
 Background::~Background()
 {
+	// Background 클래스의 소멸자
+    // 부모 클래스의 소멸자가 자동으로 호출됨
+
+    // 비트맵 정보는 공유 자원이므로 여기서 삭제하지 않음
+	m_pBitmapInfo = nullptr;
 }
 
 void GameObject::SetBitmapInfo(BitmapInfo* bitmapInfo)
 {
+    // 중복 할당 방지
     assert(m_pBitmapInfo == nullptr && "BitmapInfo must be null!");
 
     m_pBitmapInfo = bitmapInfo;
@@ -241,8 +253,8 @@ void Background::SetBitmapInfo(BitmapInfo* bitmapInfo)
 
 void GameObject::DrawBitmap(HDC hdc)
 {
-    if (m_pBitmapInfo == nullptr) return;
-    if (m_pBitmapInfo->GetBitmapHandle() == nullptr) return;
+    //if (m_pBitmapInfo == nullptr) return;
+    //if (m_pBitmapInfo->GetBitmapHandle() == nullptr) return;
 
     HDC hBitmapDC = CreateCompatibleDC(hdc); // 1. 메모리와 호환되는...  2. 변수명
     HBITMAP hOldBitmap = (HBITMAP)SelectObject(hBitmapDC, m_pBitmapInfo->GetBitmapHandle());

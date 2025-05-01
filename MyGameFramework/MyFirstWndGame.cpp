@@ -9,7 +9,7 @@
 #include "PlayScene.h"
 #include "EndingScene.h"
 #include <iostream>
-#include <assert.h>
+#include <cassert>
 
 
 using namespace learning;
@@ -26,7 +26,7 @@ bool MyFirstWndGame::Initialize()
     const wchar_t* className = L"Geometry Dash";
     const wchar_t* windowName = L"Stereo Madness";
 
-    if (false == __super::Create(className, windowName, 2048, 1000))
+    if (false == __super::Create(className, windowName, 1560, 1000))
     {
         return false;
     }
@@ -114,13 +114,13 @@ void MyFirstWndGame::Finalize()
     delete m_pGameTimer;
     m_pGameTimer = nullptr;
 
-    for (int i = 0; i < SceneType::SCENE_MAX; ++i)
+    for(auto & pScene : m_pScenes)
     {
-        if (m_pScenes[i])
+        if (pScene)
         {
-            m_pScenes[i]->Finalize();
-            delete m_pScenes[i];
-            m_pScenes[i] = nullptr;
+            pScene->Finalize();
+            delete pScene;
+            pScene = nullptr;
         }
     }
 

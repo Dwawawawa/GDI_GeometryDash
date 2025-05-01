@@ -139,7 +139,7 @@ protected:
 	bool m_isGrounded = false;
 	float m_verticalVelocity = 0.0f;
 	float m_gravityValue = 0.008f; 
-	float m_jumpForce = 2.5f; 
+	float m_jumpForce = 2.6f; 
 
     // È¸Àü
 	float m_rotation = 0.0f;         

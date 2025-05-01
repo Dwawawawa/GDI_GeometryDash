@@ -132,6 +132,7 @@
     <ClCompile Include="GameObject.cpp" />
     <ClCompile Include="GameTimer.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="MapGenerator.cpp" />
     <ClCompile Include="MyFirstWndGame.cpp" />
     <ClCompile Include="NzWndBase.cpp" />
     <ClCompile Include="PlayScene.cpp" />
@@ -145,6 +146,7 @@
     <ClInclude Include="GameObject.h" />
     <ClInclude Include="GameTimer.h" />
     <ClInclude Include="INC_Windows.h" />
+    <ClInclude Include="MapGenerator.h" />
     <ClInclude Include="MyFirstWndGame.h" />
     <ClInclude Include="NzWndBase.h" />
     <ClInclude Include="PlayScene.h" />
