@@ -18,7 +18,7 @@ void GameObject::Update(float deltaTime)
 		ApplyGravity(deltaTime);
         Rotate(deltaTime);
 	}
-
+    
     // Collider 업데이트
     if (m_pColliderCircle)
     {
@@ -45,7 +45,8 @@ void Background::Update(float deltaTime)
 void GameObject::Render(HDC hdc)
 {
     DrawBitmap(hdc);
-    DrawCollider(hdc);
+    // 콜라이더 숨기기 
+    //DrawCollider(hdc);
 }
 
 
@@ -259,7 +260,7 @@ void GameObject::DrawBitmap(HDC hdc)
     HDC hBitmapDC = CreateCompatibleDC(hdc); // 1. 메모리와 호환되는...  2. 변수명
     HBITMAP hOldBitmap = (HBITMAP)SelectObject(hBitmapDC, m_pBitmapInfo->GetBitmapHandle());
 
-    if (m_rotation != 0.0f && m_type == ObjectType::PLAYER) {
+    if (m_rotation != 0.0f && (m_type == ObjectType::PLAYER )) {
         
         // 회전 중심점 계산
 		int centerX = m_pos.x;

@@ -50,15 +50,15 @@ bool MyFirstWndGame::Initialize()
     m_hDefaultBitmap = (HBITMAP)SelectObject(m_hBackDC, m_hBackBitmap);
 
 #pragma region resource
-    m_pPlayerBitmapInfo = renderHelp::CreateBitmapInfo(L"../Resource/geometryDash/player.png");
-    m_pBlock1BitmapInfo = renderHelp::CreateBitmapInfo(L"../Resource/geometryDash/block.png");
-    m_pBackgroundBitmapInfo = renderHelp::CreateBitmapInfo(L"../Resource/geometryDash/background.png");
+    m_pPlayerBitmapInfo = renderHelp::CreateBitmapInfo(L"../../Resource/geometryDash/player.png");
+    m_pBlock1BitmapInfo = renderHelp::CreateBitmapInfo(L"../../Resource/geometryDash/block.png");
+    m_pBackgroundBitmapInfo = renderHelp::CreateBitmapInfo(L"../../Resource/geometryDash/background.png");
 	
-    m_pSpikeBitmapInfo = renderHelp::CreateBitmapInfo(L"../Resource/geometryDash/spike.png");
-	m_pBlock2BitmapInfo = renderHelp::CreateBitmapInfo(L"../Resource/geometryDash/block02.png");
-	m_PlatformBitmapInfo = renderHelp::CreateBitmapInfo(L"../Resource/geometryDash/reg_platform.png");
-	m_pSpikeBedBitmapInfo = renderHelp::CreateBitmapInfo(L"../Resource/geometryDash/spikebed.png");
-	m_pGoalBitmapInfo = renderHelp::CreateBitmapInfo(L"../Resource/geometryDash/goal.png");
+    m_pSpikeBitmapInfo = renderHelp::CreateBitmapInfo(L"../../Resource/geometryDash/spike.png");
+	m_pBlock2BitmapInfo = renderHelp::CreateBitmapInfo(L"../../Resource/geometryDash/block02.png");
+	m_PlatformBitmapInfo = renderHelp::CreateBitmapInfo(L"../../Resource/geometryDash/reg_platform.png");
+	m_pSpikeBedBitmapInfo = renderHelp::CreateBitmapInfo(L"../../Resource/geometryDash/spikebed.png");
+	m_pGoalBitmapInfo = renderHelp::CreateBitmapInfo(L"../../Resource/geometryDash/goal.png");
 
 
     if (m_pPlayerBitmapInfo == nullptr || m_pBackgroundBitmapInfo == nullptr)
@@ -165,7 +165,7 @@ bool MyFirstWndGame::InitializeAudio()
 	}
 
 	// Stereo Madness 배경 음악 로드
-	if (!pAudioSystem->LoadBackgroundMusic("../Resource/geometryDash/Geometry Dash - Stereo Madness.mp3"))
+	if (!pAudioSystem->LoadBackgroundMusic("../../Resource/geometryDash/Geometry Dash - Stereo Madness.mp3"))
 	{
 		std::cerr << "Failed to load background music" << std::endl;
 		return false;

@@ -41,10 +41,12 @@ private:
 	GameObjectBase* m_pBackground = nullptr;
 	RECT m_rect = { 0, 0, 0, 0 };
 	
-	int m_blockStartIndex = 1;
+	const float totalLength = 0.0f + (45 * 122) + (63 * 122) + (140 * 122) + (150 * 122) + (183.0f * 122);
+	int m_blockStartIndex = 1; 
+	float m_Fdinstance = 0;
 	int m_blockCount = 0;
-	int m_levelPosition = 0;
-	int m_retryCount = 0;   
+	int m_retryCount = 0;
+	int m_coinCount = 0;
 	bool m_bIsDead = false;
 	bool m_bIsEnd = false;
 

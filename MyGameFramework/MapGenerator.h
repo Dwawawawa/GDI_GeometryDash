@@ -20,6 +20,9 @@ private:
 	void CreateMapSection1();
 	void CreateMapSection2();
 	void CreateMapSection3();
+	void CreateMapSection4();
+	void CreateMapSection5();
+
 
 	// 블록 생성 헬퍼 함수들
 	void CreateBlock(float x, float y, int index);

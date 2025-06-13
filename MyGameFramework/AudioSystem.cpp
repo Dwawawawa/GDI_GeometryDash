@@ -194,5 +194,6 @@ void AudioSystem::CheckFMODError(FMOD_RESULT result, const char* message)
 	if (result != FMOD_OK)
 	{
 		std::cerr << message << ": " << FMOD_ErrorString(result) << std::endl;
+
 	}
 }

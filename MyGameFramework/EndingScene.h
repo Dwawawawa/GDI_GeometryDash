@@ -32,11 +32,15 @@ private:
 
 	// 재시도 횟수
 	int m_retryCount = 0;
+	
+	// 획득 코인
+	int m_coinCount= 0;
 
 	// 사용자 입력 대기 상태 플래그
 	bool m_bWaitingForInput = true;
 
 	// 메시지 표시 영역
 	RECT m_retryRect = { 0, 0, 0, 0 };
+	RECT m_coinRect = { 0, 0, 0, 0 };
 	RECT m_continueRect = { 0, 0, 0, 0 };
 };

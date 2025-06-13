@@ -129,7 +129,7 @@ namespace renderHelp
 
         void Clean()
         {
-            if (m_pDecoder) m_pDecoder->Release();
+             if (m_pDecoder) m_pDecoder->Release();
             if (m_pFrame) m_pFrame->Release();
             if (m_pConverter) m_pConverter->Release();
         }

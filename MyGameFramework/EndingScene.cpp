@@ -5,6 +5,7 @@
 #include <cassert>
 #include <iostream>
 
+
 void EndingScene::Initialize(NzWndBase* pWnd)
 {
     m_pGame = dynamic_cast<MyFirstWndGame*>(pWnd);
@@ -21,7 +22,7 @@ void EndingScene::Initialize(NzWndBase* pWnd)
     pNewObject->SetHeight(height);
 
     // 엔딩 이미지 로드
-    m_pEndingBitmapInfo = renderHelp::CreateBitmapInfo(L"../Resource/geometryDash/ending.png");
+    m_pEndingBitmapInfo = renderHelp::CreateBitmapInfo(L"../../Resource/geometryDash/ending.png");
     if (m_pEndingBitmapInfo != nullptr) {
         pNewObject->SetBitmapInfo(m_pEndingBitmapInfo);
     }
@@ -37,6 +38,11 @@ void EndingScene::Initialize(NzWndBase* pWnd)
     m_retryRect.top = height / 2 - 50;
     m_retryRect.right = m_retryRect.left + 500;
     m_retryRect.bottom = m_retryRect.top + 100;
+
+	m_coinRect.left = width / 2 - 250;
+	m_coinRect.top = height / 2 + 25;
+	m_coinRect.right = m_coinRect.left + 500;
+	m_coinRect.bottom = m_coinRect.top + 75;
 
     m_continueRect.left = width / 2 - 250;
     m_continueRect.top = height / 2 + 100;
@@ -64,11 +70,19 @@ void EndingScene::Render(HDC hDC)
 	WCHAR retryMessage[128];
 	swprintf_s(retryMessage, L"%d번의 시도 끝에 성공했습니다!", m_retryCount);
 
+	// 성공 메시지와 재시도 횟수 표시
+	WCHAR coinMessage[128];
+	swprintf_s(coinMessage, L"%d개의 코인을 획득했습니다.", m_coinCount);
+
 	SetTextColor(hDC, RGB(255, 255, 255));
 	SetBkMode(hDC, TRANSPARENT);
 
 	// 재시도 횟수 메시지 표시
 	DrawText(hDC, retryMessage, -1, &m_retryRect, DT_CENTER | DT_VCENTER | DT_SINGLELINE);
+
+	// 코인 횟수 메시지 표시
+	DrawText(hDC, coinMessage, -1, &m_coinRect, DT_CENTER | DT_VCENTER | DT_SINGLELINE);
+
 
 	// 계속하기 메시지 표시
 	DrawText(hDC, L"스페이스바를 눌러 계속하기", -1, &m_continueRect, DT_CENTER | DT_VCENTER | DT_SINGLELINE);
@@ -88,8 +102,10 @@ void EndingScene::Finalize()
 
 void EndingScene::Enter()
 {
-	// PlayScene에서 저장된 재시도 횟수 가져오기
+	// PlayScene에서 저장된 재시도 횟수와 획득한 코인 개수 가져오기
 	m_retryCount = static_cast<MyFirstWndGame*>(m_pGame)->GetRetryCount();
+    m_coinCount = static_cast<MyFirstWndGame*>(m_pGame)->GetCoinCount();
+
 
 	// 입장 시 다시 대기 상태로 설정
 	m_bWaitingForInput = true;

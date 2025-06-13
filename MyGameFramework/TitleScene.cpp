@@ -13,7 +13,7 @@ void TitleScene::Initialize(NzWndBase* pWnd)
     assert(m_pGame != nullptr && "Game object is not initialized!");
 
 	// 타이틀 이미지 로드
-	m_pTitleBitmapInfo = renderHelp::CreateBitmapInfo(L"../Resource/geometryDash/title.png");
+	m_pTitleBitmapInfo = renderHelp::CreateBitmapInfo(L"../../Resource/geometryDash/title.png");
 
     Background* pNewObject = new Background(ObjectType::BACKGROUND);
     pNewObject->SetPosition(0.0f, 0.0f);

@@ -10,7 +10,7 @@
 
 using namespace learning;
 
-constexpr int MAX_GAME_OBJECT_COUNT = 1000;
+constexpr int MAX_GAME_OBJECT_COUNT = 1210;
 
 void PlayScene::Initialize(NzWndBase* pWnd)
 {
@@ -31,16 +31,28 @@ void PlayScene::Update(float deltaTime)
 
 	if (m_bIsDead) {
 		m_retryCount++;
-		std::cout << "재시도 횟수: " << m_retryCount << std::endl;
+		std::cout << "시도 횟수: " << m_retryCount << std::endl;
 		m_pGame->ChangeScene(SceneType::SCENE_PLAY);
 		return;
 	}
 	else if (m_bIsEnd) {
-		std::cout << "총 재시도 횟수: " << m_retryCount << std::endl;
+		std::cout << "총 시도 횟수: " << m_retryCount << std::endl;
 		m_pGame->SetRetryCount(m_retryCount);
+		m_pGame->SetCoinCount(m_coinCount);
 		m_pGame->ChangeScene(SceneType::SCENE_ENDING);
 		return;
 	}
+
+	// 여기서 총 거리 기반 엔딩 조건 추가
+	if (m_Fdinstance >= totalLength) {
+		m_bIsEnd = true;
+		std::cout << "거리 도달! 게임 클리어!" << std::endl;
+		m_pGame->SetRetryCount(m_retryCount);
+		m_pGame->SetCoinCount(m_coinCount);
+		m_pGame->ChangeScene(SceneType::SCENE_ENDING);
+		return;
+	}
+
 
 	for (int i = 0; i < MAX_GAME_OBJECT_COUNT; ++i)
 	{
@@ -50,10 +62,12 @@ void PlayScene::Update(float deltaTime)
 		}
 	}
 
-	//=====맵 스크롤링은 다른 함수로 뺴야겠다.====
 	static bool isDelete = false;
 	// 맵 스크롤링 속도 설정
 	const float scrollSpeed = 0.8f;  // 픽셀/밀리초
+
+	m_Fdinstance += scrollSpeed * deltaTime;
+
 	for (int i = m_blockStartIndex; i < m_blockStartIndex + m_blockCount; i++)
 	{
 		if (m_GameObjectPtrTable[i]) {
@@ -74,8 +88,6 @@ void PlayScene::Update(float deltaTime)
 		isDelete = false;
 	}
 
-	m_levelPosition += 1;
-	//std::cout << m_levelPosition << std::endl;
 }
 
 void PlayScene::Render(HDC hDC)
@@ -99,8 +111,7 @@ void PlayScene::Render(HDC hDC)
 #pragma region progressbar
 	// 간단한 진행 표시줄 그리기
 	int width = m_pGame->GetWidth();
-	int totalLength = 3266; // Stereo Madness 맵 길이
-	int progressWidth = (int)((float)m_levelPosition / totalLength * 300);
+	int progressWidth = static_cast<int>((m_Fdinstance / totalLength )* 300);
 
 	// 진행 표시줄 배경
 	HBRUSH hBlackBrush = CreateSolidBrush(RGB(0, 0, 0));
@@ -109,10 +120,16 @@ void PlayScene::Render(HDC hDC)
 
 	// 재시도 횟수 출력
 	WCHAR szRetryCount[32];
-	swprintf_s(szRetryCount, L"재시도: %d", m_retryCount);
+	swprintf_s(szRetryCount, L"시도 횟수: %d", m_retryCount);
 	SetTextColor(hDC, RGB(255, 255, 255));
 	SetBkMode(hDC, TRANSPARENT);
 	TextOut(hDC, width - 320, 40, szRetryCount, lstrlen(szRetryCount));
+	 
+	// 획득 코인 횟수 출력
+	WCHAR szCoinCount[32];
+	swprintf_s(szCoinCount, L"획득한 코인: %d / 3", m_coinCount);
+	TextOut(hDC, width - 320, 60, szCoinCount, lstrlen(szCoinCount));
+
 
 	// 진행 표시줄 내용
 	HBRUSH hGreenBrush = CreateSolidBrush(RGB(0, 255, 0));
@@ -124,6 +141,8 @@ void PlayScene::Render(HDC hDC)
 	DeleteObject(hBlackBrush);
 	DeleteObject(hGreenBrush);
 #pragma endregion
+
+
 }
 
 void PlayScene::Finalize()
@@ -165,9 +184,10 @@ void PlayScene::Enter()
 {
 	// 블록 카운트와 인덱스 초기화
 	m_bIsDead = false;
-	m_blockStartIndex = 1;
+	m_Fdinstance = 0;
 	m_blockCount = 0;
-	m_levelPosition = 0;
+	m_blockStartIndex = 1;
+	m_coinCount = 0;
 	m_bIsEnd = false;
 
 	// 게임 오브젝트 배열 초기화
@@ -414,7 +434,8 @@ void PlayScene::UpdatePlayerInfo()
 	assert(m_pGame != nullptr && "MyFirstWndGame is null!");
 
 	bool isGrounded = false;
-
+	Vector2f playerPos = pPlayer->GetPosition();
+	float checkRadius = 300.0f; // 플레이어 주변 검사 범위
 
 	for (int i = m_blockStartIndex; i < m_blockStartIndex + m_blockCount; i++)
 	{
@@ -423,6 +444,15 @@ void PlayScene::UpdatePlayerInfo()
 		{
 			if (pPlayer->GetColliderBox() && pObject->GetColliderBox())
 			{
+				Vector2f objPos = pObject->GetPosition();
+
+				// 플레이어와 가까운 오브젝트만 충돌 검사
+				float distance = std::sqrt(std::pow(playerPos.x - objPos.x, 2) +
+					std::pow(playerPos.y - objPos.y, 2));
+
+				if (distance > checkRadius) continue;
+
+
 				if (learning::Intersect(*pPlayer->GetColliderBox(), *pObject->GetColliderBox()))
 				{
 					// 원래는 플레이어 아래와 블록 톱만 비교했었는데...
@@ -470,7 +500,16 @@ void PlayScene::UpdatePlayerInfo()
 
 					case ObjectType::GOAL:
 						// 골 도달 - 게임 클리어
-						m_bIsEnd = true;
+						m_coinCount++;
+						delete m_GameObjectPtrTable[i];
+						m_GameObjectPtrTable[i] = nullptr;
+
+						//// 시각적으로 코인을 사라지게 하려면 (선택사항)
+						//pObject->SetWidth(0);
+						//pObject->SetHeight(0);
+
+						//// 또는 콜라이더만 비활성화
+						//static_cast<GameObject*>(pObject)->SetColliderBox(0, 0);
 						break;
 					}
 				}

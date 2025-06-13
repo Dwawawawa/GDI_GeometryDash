@@ -26,6 +26,9 @@ public:
 
 	void SetRetryCount(int count) { m_retryCount = count; }
 	int GetRetryCount() const { return m_retryCount; }
+    void SetCoinCount(int count) { m_coinCount = count; }
+    int GetCoinCount() const { return m_coinCount; }
+
 
     void OnSpaceKeyDown();
 
@@ -59,6 +62,7 @@ private:
     int m_eCurrentScene = SCENE_TITLE;
     Scene* m_pScenes[SceneType::SCENE_MAX] = { nullptr, nullptr, nullptr };
     
+    int m_coinCount = 0;
     int m_retryCount = 0;
 
     struct MOUSE_POS

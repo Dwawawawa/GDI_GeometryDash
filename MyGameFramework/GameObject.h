@@ -24,7 +24,7 @@ enum class ObjectType
     BLOCK2,
     BACKGROUND,
     SPIKE,          
-    MINISPKIE,  
+    MINISPKIE,
     PLATFORM, 
     SPIKEBED,       
     GOAL            
@@ -63,11 +63,9 @@ public:
 
     float GetSpeed() const { return m_speed; }
 
-
     
 
 protected:
-
     void Move(float deltaTime);
 
 protected:
@@ -138,8 +136,8 @@ protected:
 	// 중력과 점프
 	bool m_isGrounded = false;
 	float m_verticalVelocity = 0.0f;
-	float m_gravityValue = 0.008f; 
-	float m_jumpForce = 2.6f; 
+	float m_gravityValue = 0.006f; 
+	float m_jumpForce = 2.0f; 
 
     // 회전
 	float m_rotation = 0.0f;         
