@@ -1,6 +1,6 @@
-# 🎮 프로젝트명: Windows GDI Geometry Dash Clone
+# 🎮 과제명: Windows GDI Geometry Dash Clone
 
-윈도우 GDI를 활용해 2D 러닝 게임인 '지오메트리 대쉬'를 모작한 프로젝트입니다.
+윈도우 GDI를 활용해 2D 러닝 게임인 '지오메트리 대쉬'를 모작한 과제였습니다.
 
 ---
 
